@@ -134,7 +134,6 @@ class BasicUsageTest {
         failIfExecuteThisCode()
     }
 
-
     @Test(expected = PointedAssertionError)
     public void shouldByPassAssertionOutsideFromMockedMethod(){
         glock.newClip()

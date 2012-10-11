@@ -35,14 +35,12 @@ class GLoCK {
        tracerHolder.tracer
     }
 
-    public <MockType> MockType any(Object[] args = null, Class<MockType> clazz){
+    public <MockType> MockType any(Class<MockType> clazz, Object... args = null){
         if (anyValuePerClass.containsKey(clazz)){
             return anyValuePerClass.get(clazz)
         }
         def instance = MockFor.getInstance(clazz, args)
-        def thisProxy = MockProxyMetaClass.make(clazz)
-        instance.metaClass = thisProxy
-        anyValuePerClass.put(clazz,instance)
+        anyValuePerClass.put(instance.getClass(),instance)
         return instance
     }
 
@@ -52,7 +50,7 @@ class GLoCK {
      * @param clazz - mocked instance class
      * @return charge, which you could use for testing
      */
-    public <MockType> MockType charge(Object[] args = null, Class<MockType> clazz){
+    public <MockType> MockType charge(Class<MockType> clazz,Object... args = null){
         def instance = MockFor.getInstance(clazz, args)
         def thisProxy = MockProxyMetaClass.make(clazz)
         thisProxy.interceptor = accessInterceptor
