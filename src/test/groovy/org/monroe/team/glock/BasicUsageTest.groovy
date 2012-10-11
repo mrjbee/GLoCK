@@ -132,7 +132,22 @@ class BasicUsageTest {
 
         execWithCaution {glock.verifyClip()}
         failIfExecuteThisCode()
+    }
 
+
+    @Test(expected = PointedAssertionError)
+    public void shouldByPassAssertionOutsideFromMockedMethod(){
+        glock.newClip()
+        IClass mockInstance = glock.charge(IClass)
+        //Two expectations
+        glock.mockWith(mockInstance.methodB(1), {int arg->
+            Assert.assertEquals(arg, 2)
+        })
+
+        glock.reload()
+        //Should re trow assertion exception
+        execWithCaution {mockInstance.methodB(1)}
+        failIfExecuteThisCode()
     }
 
     private void execWithCaution(Closure exec){

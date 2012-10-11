@@ -58,6 +58,10 @@ class ExpectedMethod {
 
     Object exec(Object[] arguments) {
         executedOnce = true
-        body.call(arguments)
+        try {
+            return  body.getMetaClass().invokeMethod(body,"doCall",arguments);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
