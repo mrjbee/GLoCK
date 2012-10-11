@@ -20,4 +20,9 @@ class EqualsArgMatcher implements ArgMatcher{
         else
             return expectedValue.equals(arg)
     }
+
+    @Override
+    String description() {
+        (expectedValue)?expectedValue.toString():"NullValue";
+    }
 }

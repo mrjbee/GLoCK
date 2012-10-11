@@ -1,5 +1,7 @@
 package org.monroe.team.glock.control
 
+import org.monroe.team.glock.utils.StringExtractor
+
 /**
  * User: mrjbee
  * Date: 10/11/12
@@ -8,6 +10,7 @@ package org.monroe.team.glock.control
 class Control {
 
     private final Object mockedObject;
+    private final Map<String, ExpectedMethod> mockedMethodMap = [:];
 
     Control(Object mockedObject) {
         this.mockedObject = mockedObject
@@ -15,5 +18,38 @@ class Control {
 
     Object getMockObject() {
         mockedObject
+    }
+
+    void addMethod(ExpectedMethod method) {
+        List<ExpectedMethod> methodStack = mockedMethodMap.get(method.getName())
+        if (methodStack == null){
+            methodStack = new ArrayList<ExpectedMethod>()
+            mockedMethodMap.put(method.name, methodStack)
+        }
+        methodStack.add(method)
+    }
+
+    Object callMethod(String methodName, Object[] args) {
+       List<ExpectedMethod> expectedMethodCallList = mockedMethodMap.get(methodName)
+       if (expectedMethodCallList == null || expectedMethodCallList.size() == 0){
+           throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)}'")
+       } else {
+           ExpectedMethod method = findSuitableMethods(args)
+           if (! method){
+               throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)} \n'"
+                                        +"expected are: \n${StringExtractor.methodList(expectedMethodCallList)} ")
+           }
+           return callMethodImpl(method, args)
+       }
+    }
+
+    Object callMethodImpl(ExpectedMethod expectedMethod, Object[] objects) {
+        return expectedMethod.body.call(objects)
+    }
+
+    ExpectedMethod findSuitableMethods(Object[] args, List<ExpectedMethod> expectedMethodList) {
+      expectedMethodList.find {ExpectedMethod method ->
+          !method.executedOnce || method.matchArguments(args)
+      }
     }
 }

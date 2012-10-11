@@ -18,6 +18,11 @@ class NoOpArgMatcher implements ArgMatcher{
 
     @Override
     boolean same(def arg) {
+        return fixedValue
+    }
 
+    @Override
+    String description() {
+      (fixedValue)?"AnyObject":"NonOfThem"
     }
 }

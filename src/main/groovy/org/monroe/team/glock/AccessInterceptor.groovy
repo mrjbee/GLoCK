@@ -26,9 +26,10 @@ class AccessInterceptor implements PropertyAccessInterceptor {
     @Override
     Object beforeInvoke(Object object, String methodName, Object[] arguments) {
         if (ownInstance.isChargingMode()){
-           ownInstance.addExecutionExpectation(object,methodName, arguments)
+            ownInstance.addExecutionExpectation(object,methodName, arguments)
+            return new Object()
         } else {
-
+           return ownInstance.exec(object,methodName, arguments)
         }
     }
 
