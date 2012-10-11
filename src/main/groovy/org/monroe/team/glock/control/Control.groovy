@@ -34,7 +34,7 @@ class Control {
        if (expectedMethodCallList == null || expectedMethodCallList.size() == 0){
            throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)}'")
        } else {
-           ExpectedMethod method = findSuitableMethods(args)
+           ExpectedMethod method = findSuitableMethods(args, expectedMethodCallList)
            if (! method){
                throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)} \n'"
                                         +"expected are: \n${StringExtractor.methodList(expectedMethodCallList)} ")

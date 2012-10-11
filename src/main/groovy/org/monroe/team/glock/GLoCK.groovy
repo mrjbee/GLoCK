@@ -56,7 +56,8 @@ class GLoCK {
         def thisProxy = MockProxyMetaClass.make(clazz)
         thisProxy.interceptor = accessInterceptor
         instance.metaClass = thisProxy
-
+        Control control = new Control(instance)
+        controls.add(control)
         return instance
     }
 
@@ -95,7 +96,7 @@ class GLoCK {
 
     private Control findControlFor(Object o) {
         controls.find {Control it->
-            it.getMockObject().equals(o)
+            it.getMockObject() == o
         }
     }
 
