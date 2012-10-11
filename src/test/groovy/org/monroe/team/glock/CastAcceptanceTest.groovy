@@ -12,21 +12,21 @@ import org.monroe.team.glock.test.domain.IClass
  */
 class CastAcceptanceTest {
 
-    private GLoCK gock = new GLoCK();
+    private GLoCK glock = new GLoCK();
 
     @Test
     public void shouldAllowMockInterfaces(){
-        IInterface anInterface = gock.mock(IInterface.class)
+        IInterface anInterface = glock.mock(IInterface.class)
     }
 
     @Test
     public void shouldAllowMockAbstractClass(){
-        IAbstractClass aClass = gock.mock(IAbstractClass.class)
+        IAbstractClass aClass = glock.mock(IAbstractClass.class)
     }
 
     @Test
     public void shouldAllowMockClass(){
-        IClass aClass = gock.mock(IClass.class)
+        IClass aClass = glock.mock(IClass.class)
     }
 
 }

@@ -7,6 +7,12 @@ package org.monroe.team.glock
  */
 class AccessInterceptor implements PropertyAccessInterceptor {
 
+    private final GLoCK ownInstance
+
+    AccessInterceptor(GLoCK ownInstance) {
+        this.ownInstance = ownInstance
+    }
+
     @Override
     Object beforeGet(Object object, String property) {
         throw new IllegalStateException("Not Implemented yet")
@@ -19,10 +25,11 @@ class AccessInterceptor implements PropertyAccessInterceptor {
 
     @Override
     Object beforeInvoke(Object object, String methodName, Object[] arguments) {
-        println ("Call heppends: ")
-        println ("  Object:"+object)
-        println ("  method:"+methodName)
-        println ("  args:"+arguments)
+        if (ownInstance.isChargingMode()){
+           ownInstance.addExecutionExpectation(object,methodName, arguments)
+        } else {
+
+        }
     }
 
     @Override
