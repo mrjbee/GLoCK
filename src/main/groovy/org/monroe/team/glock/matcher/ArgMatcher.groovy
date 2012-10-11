@@ -7,5 +7,5 @@ package org.monroe.team.glock.matcher
  */
 interface ArgMatcher {
     boolean same(def arg)
-    String description()
+
 }

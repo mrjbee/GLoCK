@@ -10,7 +10,7 @@ import org.monroe.team.glock.control.ExpectedMethod
 class StringExtractor {
 
     static String method(ExpectedMethod method) {
-        return " ${method.name} [executed = ${method.executedOnce}] arg matchers "+method.argMatcherList
+        return " ${method.name} [executed = ${method.executedOnce}], arg matchers '${method.argMatcherList}' "
     }
 
     static String method(String methodName, Object[] args) {

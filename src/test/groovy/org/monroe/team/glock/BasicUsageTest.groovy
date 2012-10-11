@@ -98,4 +98,19 @@ class BasicUsageTest {
         fail()
     }
 
+    @Test (expected = AssertionError)
+    public void shouldThrowAssertionErrorWhenMethodWasCalledWithUnexpectedArgumentsValues(){
+        glock.newClip()
+        IClass mockInstance = glock.charge(IClass)
+        glock.mockWith(mockInstance.methodB(1), glock.doNothing())
+        glock.reload()
+        try{
+            mockInstance.methodB(2)
+        }catch (AssertionError ae){
+            ae.printStackTrace()
+            throw ae
+        }
+        fail()
+    }
+
 }

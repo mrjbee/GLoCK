@@ -82,7 +82,7 @@ class GLoCK {
     private List<ArgMatcher> createArgMatcherList() {
         List<ArgMatcher> argMatcherList = [];
         Object[] args = currentExpectation.args
-        if (!args) {
+        if (args) {
             args.each { Object arg ->
                 if (isAnyMarkerObject(arg)) {
                     argMatcherList.add(NoOpArgMatcher.ALWAYS_TRUE)

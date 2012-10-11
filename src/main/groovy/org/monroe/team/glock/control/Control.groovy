@@ -36,7 +36,7 @@ class Control {
        } else {
            ExpectedMethod method = findSuitableMethods(args, expectedMethodCallList)
            if (! method){
-               throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)} \n'"
+               throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)} \n"
                                         +"expected are: \n${StringExtractor.methodList(expectedMethodCallList)} ")
            }
            return callMethodImpl(method, args)
@@ -49,7 +49,7 @@ class Control {
 
     ExpectedMethod findSuitableMethods(Object[] args, List<ExpectedMethod> expectedMethodList) {
       expectedMethodList.find {ExpectedMethod method ->
-          !method.executedOnce || method.matchArguments(args)
+          (!method.executedOnce && method.matchArguments(args))
       }
     }
 }

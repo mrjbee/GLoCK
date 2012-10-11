@@ -1,5 +1,7 @@
 package org.monroe.team.glock.matcher
 
+import org.monroe.team.glock.utils.StringExtractor
+
 /**
  * User: mrjbee
  * Date: 10/11/12
@@ -22,7 +24,7 @@ class EqualsArgMatcher implements ArgMatcher{
     }
 
     @Override
-    String description() {
-        (expectedValue)?expectedValue.toString():"NullValue";
+    String toString() {
+        "eq ${(expectedValue)?StringExtractor.object(expectedValue):'NullValue'}"
     }
 }

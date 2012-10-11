@@ -22,7 +22,7 @@ class NoOpArgMatcher implements ArgMatcher{
     }
 
     @Override
-    String description() {
-      (fixedValue)?"AnyObject":"NonOfThem"
+    String toString() {
+      "fx " + (fixedValue)?"AnyObject":"NonOfThem"
     }
 }

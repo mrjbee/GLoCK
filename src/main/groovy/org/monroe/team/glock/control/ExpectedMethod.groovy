@@ -46,7 +46,7 @@ class ExpectedMethod {
             return false
         } else {
             boolean answer = true;
-            argMatcherList.eachWithIndex {int index, ArgMatcher argMatcher->
+            argMatcherList.eachWithIndex {ArgMatcher argMatcher,int index->
                 if (!argMatcher.same(args[index])){
                     answer = false;
                     return answer
