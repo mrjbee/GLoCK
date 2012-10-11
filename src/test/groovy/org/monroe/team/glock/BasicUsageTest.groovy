@@ -64,57 +64,45 @@ class BasicUsageTest {
         glock.verifyClip()
     }
 
-    @Test(expected = AssertionError)
+    @Test(expected = PointedAssertionError)
     public void shouldThrowAssertionErrorWhenNoMethodsWereExpected(){
         glock.newClip()
         IClass mockInstance = glock.charge(IClass)
         glock.reload()
-        try{
-            mockInstance.methodA()
-        }catch (AssertionError ae){
-            ae.printStackTrace()
-            throw ae
-        }
-        fail()
+
+        execWithCaution {mockInstance.methodA()}
+
+        failIfExecuteThisCode()
     }
 
-    private void fail() {
-        //Could not use Assert.fail since it also produce AssertionError
-        throw new IllegalArgumentException("It should never go here")
+    private void failIfExecuteThisCode() {
+        Assert.fail("Should nit be here")
     }
 
-    @Test (expected = AssertionError)
+    @Test (expected = PointedAssertionError)
     public void shouldThrowAssertionErrorWhenNotTheSameMethodWasExpected(){
         glock.newClip()
         IClass mockInstance = glock.charge(IClass)
         glock.mockWith(mockInstance.methodA(), glock.doNothing())
         glock.reload()
-        try{
-            mockInstance.methodB(2)
-        }catch (AssertionError ae){
-            ae.printStackTrace()
-            throw ae
-        }
-        fail()
+
+        execWithCaution {mockInstance.methodB(2)}
+
+        failIfExecuteThisCode()
     }
 
-    @Test (expected = AssertionError)
+    @Test (expected = PointedAssertionError)
     public void shouldThrowAssertionErrorWhenMethodWasCalledWithUnexpectedArgumentsValues(){
         glock.newClip()
         IClass mockInstance = glock.charge(IClass)
         glock.mockWith(mockInstance.methodB(1), glock.doNothing())
         glock.reload()
-        try{
-            mockInstance.methodB(2)
-        }catch (AssertionError ae){
-            ae.printStackTrace()
-            throw ae
-        }
-        fail()
+        execWithCaution {mockInstance.methodB(2)}
+        failIfExecuteThisCode()
     }
 
 
-    @Test(expected = AssertionError)
+    @Test(expected = PointedAssertionError)
     public void shouldThrowAssertionBecauseOfVerificationOneExpectedCallOfTheSameMethodNotHappens(){
         glock.newClip()
         IClass mockInstance = glock.charge(IClass)
@@ -126,7 +114,32 @@ class BasicUsageTest {
         //One usage
         mockInstance.methodB(1)
 
-        glock.verifyClip()
+        execWithCaution {glock.verifyClip()}
+        failIfExecuteThisCode()
     }
 
+    @Test(expected = PointedAssertionError)
+    public void shouldThrowAssertionBecauseOfVerificationOneExpectedCallOfTheOtherMethodNotHappens(){
+        glock.newClip()
+        IClass mockInstance = glock.charge(IClass)
+        //Two expectations
+        glock.mockWith(mockInstance.methodB(1), glock.doNothing())
+        glock.mockWith(mockInstance.methodA(), glock.doNothing())
+
+        glock.reload()
+        //One usage
+        mockInstance.methodB(1)
+
+        execWithCaution {glock.verifyClip()}
+        failIfExecuteThisCode()
+
+    }
+
+    private void execWithCaution(Closure exec){
+        try{
+            exec.call()
+        } catch (AssertionError ae){
+            throw new PointedAssertionError(ae)
+        }
+    }
 }
