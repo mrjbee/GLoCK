@@ -25,7 +25,7 @@ class StringExtractor {
                 }
             }
             if (args.length != 0) {
-                builder.deleteCharAt(builder.length - 1)
+                builder.deleteCharAt(builder.length() - 1)
             }
         }
         builder.append(")")

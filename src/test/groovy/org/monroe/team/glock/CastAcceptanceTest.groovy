@@ -16,17 +16,17 @@ class CastAcceptanceTest {
 
     @Test
     public void shouldAllowMockInterfaces(){
-        IInterface anInterface = glock.mock(IInterface.class)
+        IInterface anInterface = glock.charge(IInterface.class)
     }
 
     @Test
     public void shouldAllowMockAbstractClass(){
-        IAbstractClass aClass = glock.mock(IAbstractClass.class)
+        IAbstractClass aClass = glock.charge(IAbstractClass.class)
     }
 
     @Test
     public void shouldAllowMockClass(){
-        IClass aClass = glock.mock(IClass.class)
+        IClass aClass = glock.charge(IClass.class)
     }
 
 }

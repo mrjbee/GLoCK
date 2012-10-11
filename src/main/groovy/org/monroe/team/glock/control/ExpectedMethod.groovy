@@ -13,11 +13,13 @@ class ExpectedMethod {
     private List<ArgMatcher> argMatcherList;
     private Closure body;
     private boolean executedOnce = false;
+    private final boolean stub;
 
-    ExpectedMethod(String name, List<ArgMatcher> argMatcherList, Closure body) {
+    ExpectedMethod(String name, boolean stub, List<ArgMatcher> argMatcherList, Closure body) {
         this.name = name
         this.argMatcherList = argMatcherList
         this.body = body
+        this.stub = stub
     }
 
     String getName(){

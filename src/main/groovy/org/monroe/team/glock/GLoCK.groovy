@@ -46,26 +46,37 @@ class GLoCK {
     }
 
         /**
-     * Create mock for class, abstract class or interface
+     * Create charge for class, abstract class or interface
      * @param args - current limitation, you should by pass arguments to match existing constructor if any
      * @param clazz - mocked instance class
-     * @return mock, which you could use for testing
+     * @return charge, which you could use for testing
      */
-    public <MockType> MockType mock(Object[] args = null, Class<MockType> clazz){
+    public <MockType> MockType charge(Object[] args = null, Class<MockType> clazz){
         def instance = MockFor.getInstance(clazz, args)
         def thisProxy = MockProxyMetaClass.make(clazz)
         thisProxy.interceptor = accessInterceptor
         instance.metaClass = thisProxy
         Control control = new Control(instance)
         controls.add(control)
+
+        //Add stub to class
+        stubWith(instance.getClass(),{clazz})
+
         return instance
     }
 
-    public <AnyType> void charge(AnyType expectedMethod, Closure bullet){
+    public <AnyType> void stubWith(AnyType expectedMethod, Closure bullet){
         //TODO: add args pre-validation
         Control control = findControlFor(currentExpectation.obj);
         List<ArgMatcher> argMatcherList = createArgMatcherList()
-        control.addMethod(new ExpectedMethod(currentExpectation.method, argMatcherList, bullet))
+        control.addMethod(new ExpectedMethod(currentExpectation.method, true,  argMatcherList, bullet))
+    }
+
+    public <AnyType> void mockWith(AnyType expectedMethod, Closure bullet){
+        //TODO: add args pre-validation
+        Control control = findControlFor(currentExpectation.obj);
+        List<ArgMatcher> argMatcherList = createArgMatcherList()
+        control.addMethod(new ExpectedMethod(currentExpectation.method, false, argMatcherList, bullet))
     }
 
     private List<ArgMatcher> createArgMatcherList() {
@@ -87,7 +98,7 @@ class GLoCK {
         if (arg == null) return false
         Class argClazz = arg.getClass()
         if (anyValuePerClass.containsKey(argClazz)) {
-            if (anyValuePerClass.get(argClazz).is(arg))
+            if (anyValuePerClass.get(argClazz) == arg)
                 return true;
             else
                 return false;
@@ -105,7 +116,7 @@ class GLoCK {
     }
 
     /**
-     * Drop all expectations and stop watching any of created mock
+     * Drop all expectations and stop watching any of created charge
      */
     void newClip() {
         chargingMode = true
@@ -131,10 +142,20 @@ class GLoCK {
     Object exec(Object object, String methodName, Object[] args) {
       Control control = findControlFor(object)
       if (control == null){
-          throw new IllegalArgumentException("""Unexpected mock instance was used.
+          throw new IllegalArgumentException("""Unexpected charge instance was used.
                                 Perhaps from old execution. Object = """+ object)
       } else {
           control.callMethod(methodName, args)
       }
+    }
+
+    Closure doNothing() {
+        return {}
+    }
+
+    Closure answerWith(def answer){
+        return {
+            answer
+        }
     }
 }
