@@ -11,6 +11,7 @@ import org.monroe.team.glock.matcher.ArgMatcher
 import org.monroe.team.glock.matcher.NoOpArgMatcher
 import org.monroe.team.glock.matcher.EqualsArgMatcher
 import org.monroe.team.glock.control.ExpectedMethod
+import org.monroe.team.glock.utils.StringExtractor
 
 /**
  * User: mrjbee
@@ -125,6 +126,19 @@ class GLoCK {
     }
 
     void verifyClip() {
+        StringBuilder builder = new StringBuilder()
+        controls.each {Control control ->
+           List<ExpectedMethod> unUsedExpectedMethodList = control.getUnUsedMockMethodList()
+           if (!unUsedExpectedMethodList.empty){
+               builder.append("-for mock = ${StringExtractor.object(control.mockObject)} : \n")
+               unUsedExpectedMethodList.each {
+                    builder.append("--"+StringExtractor.method(it)+"\n")
+               }
+           }
+        }
+        if (builder.length() !=0){
+            throw new AssertionError("Unused mocks expactation \n"+builder.toString()+"\n")
+        }
     }
 
     boolean isChargingMode(){

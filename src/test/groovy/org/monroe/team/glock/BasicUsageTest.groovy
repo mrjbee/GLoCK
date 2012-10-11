@@ -113,4 +113,20 @@ class BasicUsageTest {
         fail()
     }
 
+
+    @Test(expected = AssertionError)
+    public void shouldThrowAssertionBecauseOfVerificationOneExpectedCallOfTheSameMethodNotHappens(){
+        glock.newClip()
+        IClass mockInstance = glock.charge(IClass)
+        //Two expectations
+        glock.mockWith(mockInstance.methodB(1), glock.doNothing())
+        glock.mockWith(mockInstance.methodB(2), glock.doNothing())
+
+        glock.reload()
+        //One usage
+        mockInstance.methodB(1)
+
+        glock.verifyClip()
+    }
+
 }

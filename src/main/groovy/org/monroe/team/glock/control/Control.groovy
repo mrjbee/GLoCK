@@ -39,17 +39,26 @@ class Control {
                throw new AssertionError("Unexpected call for ${StringExtractor.object(mockedObject)} - '${StringExtractor.method(methodName,args)} \n"
                                         +"expected are: \n${StringExtractor.methodList(expectedMethodCallList)} ")
            }
-           return callMethodImpl(method, args)
+           return method.exec(args)
        }
     }
 
-    Object callMethodImpl(ExpectedMethod expectedMethod, Object[] objects) {
-        return expectedMethod.body.call(objects)
-    }
 
     ExpectedMethod findSuitableMethods(Object[] args, List<ExpectedMethod> expectedMethodList) {
       expectedMethodList.find {ExpectedMethod method ->
           (!method.executedOnce && method.matchArguments(args))
       }
+    }
+
+    List<ExpectedMethod> getUnUsedMockMethodList() {
+        List<ExpectedMethod> answer = [];
+        mockedMethodMap.each {key, List<ExpectedMethod> methods ->
+            methods.each { ExpectedMethod method ->
+                 if (method.isNotUsed()){
+                     answer.add(method)
+                 }
+            }
+        }
+        return answer
     }
 }

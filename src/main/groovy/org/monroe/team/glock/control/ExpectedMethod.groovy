@@ -34,10 +34,6 @@ class ExpectedMethod {
         return executedOnce
     }
 
-    Closure getBody() {
-        return body
-    }
-
     boolean matchArguments(Object[] args) {
         if (args == null || args.length == 0){
             return argMatcherList.empty;
@@ -54,5 +50,14 @@ class ExpectedMethod {
             }
             return answer;
         }
+    }
+
+    boolean isNotUsed() {
+        return !executedOnce && !stub
+    }
+
+    Object exec(Object[] arguments) {
+        executedOnce = true
+        body.call(arguments)
     }
 }
