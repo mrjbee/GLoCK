@@ -1,4 +1,4 @@
-package org.monroe.team.gock.test.domain
+package org.monroe.team.glock.test.domain
 
 /**
  * User: mrjbee

@@ -1,9 +1,9 @@
-package org.monroe.team.gock
+package org.monroe.team.glock
 
-import org.monroe.team.gock.trace.Tracer
-import org.monroe.team.gock.trace.impl.ConsoleTracer
-import org.monroe.team.gock.trace.Level
-import org.monroe.team.gock.trace.TracerHolder
+import org.monroe.team.glock.trace.Tracer
+import org.monroe.team.glock.trace.impl.ConsoleTracer
+import org.monroe.team.glock.trace.Level
+import org.monroe.team.glock.trace.TracerHolder
 import groovy.mock.interceptor.MockFor
 import groovy.mock.interceptor.MockProxyMetaClass
 
@@ -12,7 +12,7 @@ import groovy.mock.interceptor.MockProxyMetaClass
  * Date: 10/11/12
  * Time: 1:56 PM
  */
-class GoCK {
+class GLoCK {
 
     private TracerHolder tracerHolder = new TracerHolder(new ConsoleTracer(Level.OFF))
 

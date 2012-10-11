@@ -1,7 +1,7 @@
-package org.monroe.team.gock.trace.impl
+package org.monroe.team.glock.trace.impl
 
-import org.monroe.team.gock.trace.AbstractTracer
-import org.monroe.team.gock.trace.Level
+import org.monroe.team.glock.trace.AbstractTracer
+import org.monroe.team.glock.trace.Level
 
 /**
  * User: mrjbee

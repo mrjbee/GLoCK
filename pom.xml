@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <groupId>org.monroe.team.gock</groupId>
-    <artifactId>gock-main</artifactId>
+    <groupId>org.monroe.team.glock</groupId>
+    <artifactId>glock-main</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>GoCK (Groovy Mock) testing framework</name>
+    <name>GLoCK (Groovy Mock) testing framework</name>
     <scm>
-        <connection>scm:git:https://github.com/mrjbee/GoCK.git</connection>
-        <developerConnection>scm:git:https://github.com/mrjbee/GoCK.git</developerConnection>
+        <connection>scm:git:https://github.com/mrjbee/GLoCK.git</connection>
+        <developerConnection>scm:git:https://github.com/mrjbee/GLoCK.git</developerConnection>
     </scm>
 
     <dependencies>
@@ -78,7 +78,7 @@
                 <version>2.0-beta-8</version>
                 <configuration>
                     <goals>clean install</goals>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>&gt;
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
         </plugins>

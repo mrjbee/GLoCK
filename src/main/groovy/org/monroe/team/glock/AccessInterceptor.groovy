@@ -1,4 +1,4 @@
-package org.monroe.team.gock
+package org.monroe.team.glock
 
 /**
  * User: mrjbee

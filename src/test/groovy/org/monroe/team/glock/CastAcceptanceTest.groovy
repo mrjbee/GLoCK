@@ -1,9 +1,9 @@
-package org.monroe.team.gock
+package org.monroe.team.glock
 
 import org.junit.Test
-import org.monroe.team.gock.test.domain.IInterface
-import org.monroe.team.gock.test.domain.IAbstractClass
-import org.monroe.team.gock.test.domain.IClass
+import org.monroe.team.glock.test.domain.IInterface
+import org.monroe.team.glock.test.domain.IAbstractClass
+import org.monroe.team.glock.test.domain.IClass
 
 /**
  * User: mrjbee
@@ -12,7 +12,7 @@ import org.monroe.team.gock.test.domain.IClass
  */
 class CastAcceptanceTest {
 
-    private GoCK gock = new GoCK();
+    private GLoCK gock = new GLoCK();
 
     @Test
     public void shouldAllowMockInterfaces(){
