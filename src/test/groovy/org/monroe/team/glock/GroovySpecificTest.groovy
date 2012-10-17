@@ -2,6 +2,8 @@ package org.monroe.team.glock
 
 import org.junit.Test
 import org.monroe.team.glock.test.domain.IAbstractClass2
+import org.monroe.team.glock.test.domain.ActiveConstructorObject
+import junit.framework.Assert
 
 /**
  * User: mrjbee
@@ -28,6 +30,19 @@ class GroovySpecificTest {
 
         glock.verifyClip()
 
+    }
+
+    @Test
+    public void constructorWillBeCalled(){
+        glock.newClip()
+         //If constructor executed then
+        boolean constructorCallClosure = false
+        ActiveConstructorObject testInstance = glock.charge(ActiveConstructorObject,{
+            constructorCallClosure = true
+        })
+        Assert.assertTrue(constructorCallClosure)
+        glock.reload()
+        glock.verifyClip()
     }
 
 }
