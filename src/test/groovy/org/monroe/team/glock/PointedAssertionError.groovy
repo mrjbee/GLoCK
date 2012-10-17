@@ -5,7 +5,7 @@ package org.monroe.team.glock
  * Date: 10/11/12
  * Time: 9:35 PM
  */
-class PointedAssertionError extends RuntimeException {
+class PointedAssertionError extends Error {
     PointedAssertionError(Throwable throwable) {
         super(throwable)
     }

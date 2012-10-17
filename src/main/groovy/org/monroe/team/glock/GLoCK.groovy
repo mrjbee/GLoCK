@@ -12,6 +12,7 @@ import org.monroe.team.glock.matcher.NoOpArgMatcher
 import org.monroe.team.glock.matcher.EqualsArgMatcher
 import org.monroe.team.glock.control.ExpectedMethod
 import org.monroe.team.glock.utils.StringExtractor
+import org.monroe.team.glock.matcher.ClosureMatcher
 
 /**
  * User: mrjbee
@@ -25,7 +26,6 @@ class GLoCK {
     private boolean chargingMode = true
     private List<Control> controls =  new ArrayList<Control>()
     private Map currentExpectation = [:]
-    private Map anyValuePerClass = [:]
 
     void setTracer(Tracer tracer){
        tracerHolder.setTracer(tracer)
@@ -35,13 +35,8 @@ class GLoCK {
        tracerHolder.tracer
     }
 
-    public <MockType> MockType any(Class<MockType> clazz, Object... args = null){
-        if (anyValuePerClass.containsKey(clazz)){
-            return anyValuePerClass.get(clazz)
-        }
-        def instance = MockFor.getInstance(clazz, args)
-        anyValuePerClass.put(instance.getClass(),instance)
-        return instance
+    public def any(){
+        return {true}
     }
 
         /**
@@ -50,32 +45,42 @@ class GLoCK {
      * @param clazz - mocked instance class
      * @return charge, which you could use for testing
      */
-    public <MockType> MockType charge(Class<MockType> clazz,Object... args = null){
+    public <MockType> MockType charge(Class<MockType> clazz, Object... args = null){
         def instance = MockFor.getInstance(clazz, args)
         def thisProxy = MockProxyMetaClass.make(clazz)
         thisProxy.interceptor = accessInterceptor
         instance.metaClass = thisProxy
         Control control = new Control(instance)
         controls.add(control)
-
         //Add stub to class
         stubWith(instance.getClass(),{clazz})
-
         return instance
     }
 
-    public <AnyType> void stubWith(AnyType expectedMethod, Closure bullet){
+    public void stubWith(def expectedMethod, Closure bullet){
+        execIfClosure(expectedMethod)
+
         //TODO: add args pre-validation
         Control control = findControlFor(currentExpectation.obj);
         List<ArgMatcher> argMatcherList = createArgMatcherList()
         control.addMethod(new ExpectedMethod(currentExpectation.method, true,  argMatcherList, bullet))
+        currentExpectation = null
     }
 
-    public <AnyType> void mockWith(AnyType expectedMethod, Closure bullet){
+    public void mockWith(def expectedMethod, Closure bullet){
+        execIfClosure(expectedMethod)
+
         //TODO: add args pre-validation
         Control control = findControlFor(currentExpectation.obj);
         List<ArgMatcher> argMatcherList = createArgMatcherList()
         control.addMethod(new ExpectedMethod(currentExpectation.method, false, argMatcherList, bullet))
+        currentExpectation = null
+    }
+
+    private void execIfClosure(def expectedMethod) {
+        if (expectedMethod instanceof Closure) {
+            expectedMethod.call()
+        }
     }
 
     private List<ArgMatcher> createArgMatcherList() {
@@ -83,25 +88,14 @@ class GLoCK {
         Object[] args = currentExpectation.args
         if (args) {
             args.each { Object arg ->
-                if (isAnyMarkerObject(arg)) {
-                    argMatcherList.add(NoOpArgMatcher.ALWAYS_TRUE)
+                if (arg instanceof Closure){
+                    argMatcherList.add(new ClosureMatcher(arg))
                 } else {
                     argMatcherList.add(new EqualsArgMatcher(arg))
                 }
             }
         }
         argMatcherList
-    }
-
-    private boolean isAnyMarkerObject(arg) {
-        if (arg == null) return false
-        Class argClazz = arg.getClass()
-        if (anyValuePerClass.containsKey(argClazz)) {
-            if (anyValuePerClass.get(argClazz) == arg)
-                return true;
-            else
-                return false;
-        }
     }
 
     private Control findControlFor(Object o) {
@@ -120,8 +114,7 @@ class GLoCK {
     void newClip() {
         chargingMode = true
         controls.clear()
-        anyValuePerClass.clear()
-    }
+     }
 
     void verifyClip() {
         StringBuilder builder = new StringBuilder()

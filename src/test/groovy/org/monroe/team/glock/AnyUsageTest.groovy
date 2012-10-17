@@ -19,12 +19,16 @@ class AnyUsageTest {
         IClass testArgument = new IClass()
         glock.newClip()
         IAbstractClass2 testInstance = glock.charge(IAbstractClass2)
-        glock.mockWith(testInstance.doSomethingAbstractWith(glock.any(IClass)),{IClass arg ->
+        glock.mockWith({testInstance.doSomethingAbstractWith(glock.any())},{IClass arg ->
+            Assert.assertEquals(testArgument, arg)
+        })
+        glock.mockWith({testInstance.doSomethingAbstractWith(testArgument)},{IClass arg ->
             Assert.assertEquals(testArgument, arg)
         })
         glock.reload()
 
         //Call method with concrete argument
+        testInstance.doSomethingAbstractWith(testArgument)
         testInstance.doSomethingAbstractWith(testArgument)
 
         glock.verifyClip()
@@ -35,7 +39,7 @@ class AnyUsageTest {
 
         glock.newClip()
         IAbstractClass2 testInstance = glock.charge(IAbstractClass2)
-        glock.mockWith(testInstance.doSomethingWith(glock.any(Integer,1000)),{int arg ->
+        glock.mockWith({testInstance.doSomethingWith(glock.any())},{int arg ->
             Assert.assertEquals(2, arg)
         })
         glock.reload()
@@ -45,6 +49,53 @@ class AnyUsageTest {
 
         glock.verifyClip()
 
+    }
+
+    @Test
+    public void shouldAllowToUseAnyForPrimitiveArgMatchingWithDefaultValue(){
+
+        glock.newClip()
+        IAbstractClass2 testInstance = glock.charge(IAbstractClass2)
+        //Threaded as without args
+        glock.mockWith({testInstance.doSomethingWithDefaultValueEqualsTwo()},{ ->
+
+        })
+        glock.reload()
+
+        //Call method with concrete argument
+        testInstance.doSomethingWithDefaultValueEqualsTwo()
+
+        glock.verifyClip()
+
+    }
+
+
+    @Test(expected = PointedAssertionError)
+    public void shouldAllowToUseAnyForPrimitiveArgMatchingGroovyMiracle(){
+        glock.newClip()
+        IAbstractClass2 testInstance = glock.charge(IAbstractClass2)
+        //Specify any to be boolean true
+        glock.mockWith({testInstance.doSomethingAbstractWithBoolean(glock.any())},{boolean arg ->
+        })
+
+        glock.reload()
+
+        //Call method with concrete argument
+
+        testInstance.doSomethingAbstractWithBoolean(false)
+        execWithCaution {testInstance.doSomethingAbstractWithBoolean(false) }
+
+        glock.verifyClip()
+        Assert.fail("Should never come")
+
+    }
+
+    private void execWithCaution(Closure exec){
+        try{
+            exec.call()
+        } catch (AssertionError ae){
+            throw new PointedAssertionError(ae)
+        }
     }
 
 }

@@ -7,11 +7,8 @@ package org.monroe.team.glock.test.domain
  */
 abstract class IAbstractClass2 {
     abstract public void doSomethingAbstractWith(IClass argument)
-    public void doSomethingWith(int arg){
-
-    }
-    public void doSomethingWithDefaultValueEqualsTwo(int arg = 2){
-
-    }
+    public void doSomethingWith(int arg){}
+    public void doSomethingWithDefaultValueEqualsTwo(int arg = 2){}
+    abstract public void doSomethingAbstractWithBoolean(boolean arg)
 
 }
