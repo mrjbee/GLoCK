@@ -1,6 +1,7 @@
 package org.monroe.team.glock.control
 
 import org.monroe.team.glock.matcher.ArgMatcher
+import org.monroe.team.glock.GLoCK
 
 /**
  * User: mrjbee
@@ -34,22 +35,37 @@ class ExpectedMethod {
         return executedOnce
     }
 
+    //TODO: method mathing should be fully placed in a method itself
     boolean matchArguments(Object[] args) {
+
+        if (GLoCK.ANY_ARGS_MATCHER_LIST.is(argMatcherList)){
+            return true;
+        }
+
+        if (GLoCK.ANY_ARGS_BUT_ARGS_MATCHER_LIST.is(argMatcherList)){
+            if (args == null || args.length == 0) return false
+                else return true
+        }
+
         if (args == null || args.length == 0){
             return argMatcherList.empty;
-        } //TODO have to check that with default values. aka (int i = 0)
-        else if (args.length != argMatcherList.size()){
-            return false
-        } else {
-            boolean answer = true;
-            argMatcherList.eachWithIndex {ArgMatcher argMatcher,int index->
-                if (!argMatcher.same(args[index])){
-                    answer = false;
-                    return answer
-                }
-            }
-            return answer;
         }
+
+        if (args.length != argMatcherList.size()){
+            return false
+        }
+
+
+
+        boolean answer = true;
+        argMatcherList.eachWithIndex {ArgMatcher argMatcher,int index->
+            if (!argMatcher.same(args[index])){
+                answer = false;
+                return answer
+            }
+        }
+        return answer;
+
     }
 
     boolean isNotUsed() {

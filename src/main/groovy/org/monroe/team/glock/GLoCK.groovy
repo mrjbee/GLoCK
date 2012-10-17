@@ -21,6 +21,11 @@ import org.monroe.team.glock.matcher.ClosureMatcher
  */
 class GLoCK {
 
+    private static Object ANY_ARGS = new Object()
+    private static Object ANY_ARGS_BUT_ARGS = new Object()
+    private static List<ArgMatcher> ANY_ARGS_MATCHER_LIST = []
+    private static List<ArgMatcher> ANY_ARGS_BUT_ARGS_MATCHER_LIST = []
+
     private final TracerHolder tracerHolder = new TracerHolder(new ConsoleTracer(Level.OFF))
     private final AccessInterceptor accessInterceptor = new AccessInterceptor(this)
     private boolean chargingMode = true
@@ -84,8 +89,14 @@ class GLoCK {
     }
 
     private List<ArgMatcher> createArgMatcherList() {
+
         List<ArgMatcher> argMatcherList = [];
         Object[] args = currentExpectation.args
+
+        List<ArgMatcher> predefinedList = null;
+        predefinedList = probePreDefinedLists(args)
+        if (predefinedList != null) return predefinedList;
+
         if (args) {
             args.each { Object arg ->
                 if (arg instanceof Closure){
@@ -96,6 +107,17 @@ class GLoCK {
             }
         }
         argMatcherList
+    }
+
+    private List<ArgMatcher> probePreDefinedLists(Object[] args) {
+        if (args && args.size() == 1) {
+            if (ANY_ARGS.is(args[0])) {
+                return ANY_ARGS_MATCHER_LIST;
+            } else if (ANY_ARGS_BUT_ARGS.is(args[0])) {
+                return ANY_ARGS_BUT_ARGS_MATCHER_LIST;
+            }
+        }
+        return null
     }
 
     private Control findControlFor(Object o) {
@@ -162,5 +184,13 @@ class GLoCK {
         return {
             answer
         }
+    }
+
+    def anyArgs() {
+        return GLoCK.ANY_ARGS
+    }
+
+    def anyArgsButArgs() {
+        return GLoCK.ANY_ARGS_BUT_ARGS
     }
 }
