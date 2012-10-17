@@ -1,6 +1,6 @@
 package org.monroe.team.glock.control
 
-import org.monroe.team.glock.matcher.ArgMatcher
+import org.monroe.team.glock.args.matcher.ArgMatcher
 import org.monroe.team.glock.GLoCK
 
 /**

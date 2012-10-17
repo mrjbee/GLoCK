@@ -3,13 +3,14 @@ package org.monroe.team.glock
 import groovy.mock.interceptor.MockFor
 import groovy.mock.interceptor.MockProxyMetaClass
 import org.monroe.team.glock.control.Control
-import org.monroe.team.glock.matcher.ArgMatcher
+import org.monroe.team.glock.args.matcher.ArgMatcher
 
-import org.monroe.team.glock.matcher.EqualsArgMatcher
+import org.monroe.team.glock.args.matcher.EqualsArgMatcher
 import org.monroe.team.glock.control.ExpectedMethod
 import org.monroe.team.glock.utils.StringExtractor
-import org.monroe.team.glock.matcher.ClosureMatcher
+import org.monroe.team.glock.args.matcher.ClosureMatcher
 import org.monroe.team.glock.core.AccessInterceptor
+import org.monroe.team.glock.args.ArgumentComparator
 
 /**
  * User: mrjbee
@@ -27,10 +28,11 @@ class GLoCK {
     private boolean chargingMode = true
     private List<Control> controls =  new ArrayList<Control>()
     private Map currentExpectation = [:]
+    private final static ArgumentComparator ARGUMENT_COMPARATOR_ANY = new ArgumentComparator({true})
 
 
-    public def any(){
-        return {true}
+    public ArgumentComparator any(){
+        return ARGUMENT_COMPARATOR_ANY
     }
 
         /**
@@ -48,7 +50,7 @@ class GLoCK {
         controls.add(control)
         //Add stub to class
         stubWith(instance.getClass(),{clazz})
-        return instance
+        return instance as MockType
     }
 
     public void stubWith(def expectedMethod, Closure bullet){
@@ -82,14 +84,13 @@ class GLoCK {
         List<ArgMatcher> argMatcherList = [];
         Object[] args = currentExpectation.args
 
-        List<ArgMatcher> predefinedList = null;
-        predefinedList = probePreDefinedLists(args)
+        List<ArgMatcher> predefinedList = probePreDefinedLists(args)
         if (predefinedList != null) return predefinedList;
 
         if (args) {
             args.each { Object arg ->
-                if (arg instanceof Closure){
-                    argMatcherList.add(new ClosureMatcher(arg))
+                if (arg instanceof ArgumentComparator){
+                    argMatcherList.add(new ClosureMatcher(arg.argClosure))
                 } else {
                     argMatcherList.add(new EqualsArgMatcher(arg))
                 }
