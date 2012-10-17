@@ -92,13 +92,13 @@ class AnyArgumentUsageTest {
                     Assert.assertEquals(arg2, 2)
                     Assert.assertEquals(arg3, testArgument)
                 })
-
         glock.mockWith({testInstance.doSomethingAbstractWithMultipleArguments(glock.anyArgsButArgs())},
                 {boolean arg1, int arg2, Object arg3 ->
                     Assert.assertEquals(arg1, false)
                     Assert.assertEquals(arg2, 2)
                     Assert.assertEquals(arg3, testArgument)
                 })
+
         glock.reload()
 
         testInstance.doSomethingAbstractWithMultipleArguments(true, 1, testArgument)
@@ -106,7 +106,6 @@ class AnyArgumentUsageTest {
         testInstance.doSomethingAbstractWithMultipleArguments(false, 2, testArgument)
 
         glock.verifyClip()
-
     }
 
     @Test (expected=PointedAssertionError)
@@ -123,7 +122,6 @@ class AnyArgumentUsageTest {
         execWithCaution {testInstance.doSomething()}
 
         glock.verifyClip()
-
     }
 
     private void execWithCaution(Closure exec){

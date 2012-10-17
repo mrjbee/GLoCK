@@ -1,4 +1,6 @@
-package org.monroe.team.glock
+package org.monroe.team.glock.core
+
+import org.monroe.team.glock.GLoCK
 
 /**
  * User: mrjbee

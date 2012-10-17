@@ -1,18 +1,15 @@
 package org.monroe.team.glock
 
-import org.monroe.team.glock.trace.Tracer
-import org.monroe.team.glock.trace.impl.ConsoleTracer
-import org.monroe.team.glock.trace.Level
-import org.monroe.team.glock.trace.TracerHolder
 import groovy.mock.interceptor.MockFor
 import groovy.mock.interceptor.MockProxyMetaClass
 import org.monroe.team.glock.control.Control
 import org.monroe.team.glock.matcher.ArgMatcher
-import org.monroe.team.glock.matcher.NoOpArgMatcher
+
 import org.monroe.team.glock.matcher.EqualsArgMatcher
 import org.monroe.team.glock.control.ExpectedMethod
 import org.monroe.team.glock.utils.StringExtractor
 import org.monroe.team.glock.matcher.ClosureMatcher
+import org.monroe.team.glock.core.AccessInterceptor
 
 /**
  * User: mrjbee
@@ -26,19 +23,11 @@ class GLoCK {
     private static List<ArgMatcher> ANY_ARGS_MATCHER_LIST = []
     private static List<ArgMatcher> ANY_ARGS_BUT_ARGS_MATCHER_LIST = []
 
-    private final TracerHolder tracerHolder = new TracerHolder(new ConsoleTracer(Level.OFF))
     private final AccessInterceptor accessInterceptor = new AccessInterceptor(this)
     private boolean chargingMode = true
     private List<Control> controls =  new ArrayList<Control>()
     private Map currentExpectation = [:]
 
-    void setTracer(Tracer tracer){
-       tracerHolder.setTracer(tracer)
-    }
-
-    Tracer getTracer(){
-       tracerHolder.tracer
-    }
 
     public def any(){
         return {true}
