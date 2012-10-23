@@ -114,7 +114,7 @@ class AnyArgumentUsageTest {
         glock.newClip()
         def testInstance = glock.charge(IAbstractClass2)
         glock.mockWith({testInstance.doSomething(glock.anyArgs())},glock.doNothing())
-        glock.mockWith({testInstance.doSomething(glock.anyArgsButArgs())},glock.doNothing())
+        glock.mockWith({testInstance.doSomething(glock.anyArgs())},glock.doNothing())
 
         glock.reload()
 
