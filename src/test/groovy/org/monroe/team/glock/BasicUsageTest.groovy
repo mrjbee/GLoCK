@@ -64,6 +64,31 @@ class BasicUsageTest {
         glock.verifyClip()
     }
 
+    @Test
+    public void shouldAllowMockSameClassByFewMockInstances(){
+        glock.newClip()
+        IClass mockInstance = glock.charge(IClass.class)
+        IClass mockInstance2 = glock.charge(IClass.class)
+
+        //Setup charge behaviour
+        glock.mockWith(mockInstance.methodB(1),{
+            return true
+        })
+        glock.mockWith(mockInstance2.methodB(1),{
+            return false
+        })
+
+        //Trigger charge into execute state
+        glock.reload();
+
+        //Call mocked method
+        //Validate that method was run
+        Assert.assertTrue(!mockInstance2.methodB(1))
+        Assert.assertTrue(mockInstance.methodB(1))
+        //Verify that there is no more expectations which was no executed
+        glock.verifyClip()
+    }
+
     @Test(expected = PointedAssertionError)
     public void shouldThrowAssertionErrorWhenNoMethodsWereExpected(){
         glock.newClip()
