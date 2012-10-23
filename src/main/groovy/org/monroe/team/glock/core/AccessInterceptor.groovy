@@ -33,6 +33,7 @@ class AccessInterceptor implements PropertyAccessInterceptor {
         } else {
            return ownInstance.exec(object,methodName, arguments)
         }
+
     }
 
     @Override

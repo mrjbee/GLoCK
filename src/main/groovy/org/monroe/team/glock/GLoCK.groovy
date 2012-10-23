@@ -1,6 +1,5 @@
 package org.monroe.team.glock
 
-import groovy.mock.interceptor.MockFor
 import groovy.mock.interceptor.MockProxyMetaClass
 import org.monroe.team.glock.control.Control
 import org.monroe.team.glock.args.matcher.ArgMatcher
@@ -11,6 +10,10 @@ import org.monroe.team.glock.utils.StringExtractor
 import org.monroe.team.glock.args.matcher.ClosureMatcher
 import org.monroe.team.glock.core.AccessInterceptor
 import org.monroe.team.glock.args.ArgumentComparator
+import org.monroe.team.glock.mock.MockInstanceHelper
+import org.monroe.team.glock.mock.factory.MockFactory
+import org.monroe.team.glock.mock.factory.MockID
+import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
 /**
  * User: mrjbee
@@ -29,7 +32,17 @@ class GLoCK {
     private List<Control> controls =  new ArrayList<Control>()
     private Map currentExpectation = [:]
     private final static ArgumentComparator ARGUMENT_COMPARATOR_ANY = new ArgumentComparator({true})
+    private final static MockInstanceHelper mockInstanceHelper = new MockInstanceHelper();
 
+    private final MockFactory mockFactory
+
+    GLoCK(MockFactory mockFactory) {
+        this.mockFactory = mockFactory
+    }
+
+    GLoCK() {
+        this.mockFactory = null
+    }
 
     public ArgumentComparator any(){
         return ARGUMENT_COMPARATOR_ANY
@@ -42,15 +55,25 @@ class GLoCK {
      * @return charge, which you could use for testing
      */
     public <MockType> MockType charge(Class<MockType> clazz, Object... args = null){
-        def instance = MockFor.getInstance(clazz, args)
+        def instance = mockInstanceHelper.getMock(clazz, args)
+        return chargeImpl(clazz, instance)
+    }
+
+    private <MockType> MockType chargeImpl(Class<MockType> clazz, MockType instance) {
         def thisProxy = MockProxyMetaClass.make(clazz)
         thisProxy.interceptor = accessInterceptor
         instance.metaClass = thisProxy
         Control control = new Control(instance)
         controls.add(control)
         //Add stub to class
-        stubWith(instance.getClass(),{clazz})
+        stubWith(instance.getClass(), {clazz})
         return instance as MockType
+    }
+
+    public <MockType> MockType chargePredefined(Class<MockType> clazz, MockID mockId = MockID.DEFAULT){
+        if (!mockFactory) throw new IllegalStateException("No mock factory configured")
+        def instance = mockFactory.getInstance(mockInstanceHelper,mockId,clazz)
+        return chargeImpl(clazz,instance)
     }
 
     public void stubWith(def expectedMethod, Closure bullet){
@@ -112,7 +135,7 @@ class GLoCK {
 
     private Control findControlFor(Object o) {
         controls.find {Control it->
-            it.getMockObject() == o
+            return DefaultGroovyMethods.is(it.getMockObject(),o)
         }
     }
 
@@ -183,4 +206,6 @@ class GLoCK {
     def anyArgsButArgs() {
         return GLoCK.ANY_ARGS_BUT_ARGS
     }
+
+
 }
