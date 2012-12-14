@@ -47,6 +47,10 @@ class ObjectExplorer {
     }
 
     void setFieldValue(Field field, Object value) {
+        // set accessible true
+        boolean wasAccessibly = field.isAccessible()
+        field.setAccessible(true)
         field.set(objectUnderDiscover, value)
+        field.setAccessible(wasAccessibly)
     }
 }

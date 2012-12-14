@@ -11,8 +11,7 @@ import org.junit.Test
  */
 class GlockSupportUsageTest extends GlockSupport {
 
-  @Mock
-  public IClass mock;
+  @Mock private IClass mock;
 
   @Test
   public void shouldWork(){
