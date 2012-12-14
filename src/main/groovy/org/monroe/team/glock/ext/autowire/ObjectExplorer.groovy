@@ -34,7 +34,6 @@ class ObjectExplorer {
        Field[] fields = objectUnderDiscover.getClass().getDeclaredFields();
        List<Field> answer = [];
        for (Field field: fields){
-            println(" "+field.getType()+" "+field.getAnnotations())
             if (field.isAnnotationPresent(Mock)){
                 answer.add(field)
             }
@@ -44,7 +43,7 @@ class ObjectExplorer {
 
     String getMockIDFor(Field field) {
         Mock mock = field.getAnnotation(Mock);
-        return mock.value();
+        return mock.mockId();
     }
 
     void setFieldValue(Field field, Object value) {

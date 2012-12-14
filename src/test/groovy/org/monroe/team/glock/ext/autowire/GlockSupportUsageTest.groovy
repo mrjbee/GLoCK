@@ -12,12 +12,14 @@ import org.junit.Test
 class GlockSupportUsageTest extends GlockSupport {
 
   @Mock
-  IClass mock;
+  public IClass mock;
 
   @Test
   public void shouldWork(){
     boolean wasExecuted = false;
     mockWith({mock.methodA()}, {wasExecuted = true});
+    reload()
+    mock.methodA();
   }
 
 }

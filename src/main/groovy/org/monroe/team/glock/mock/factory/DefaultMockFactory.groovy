@@ -47,6 +47,6 @@ class DefaultMockFactory implements MockFactory {
     }
 
     protected <MockType> Object[] fallbackConstructorArgsByClassAndId(Class<MockType> mockTypeClass, String mockID){
-        return null
+        return []
     }
 }

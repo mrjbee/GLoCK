@@ -43,8 +43,8 @@ class GlockSupport {
     }
 
     private void initMockField(Field field) {
-        Class mockClass = field.getClass();
-        String mockID = objectExplorer.getMockIDFor(field);                        T
+        Class mockClass = field.getType();
+        String mockID = objectExplorer.getMockIDFor(field);
         Object mockValue = glockInstance.chargePredefined(mockClass, mockID);
         objectExplorer.setFieldValue(field, mockValue);
     }
