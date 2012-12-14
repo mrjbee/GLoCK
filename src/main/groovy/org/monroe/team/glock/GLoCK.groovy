@@ -12,7 +12,6 @@ import org.monroe.team.glock.core.AccessInterceptor
 import org.monroe.team.glock.args.ArgumentComparator
 import org.monroe.team.glock.mock.MockInstanceHelper
 import org.monroe.team.glock.mock.factory.MockFactory
-import org.monroe.team.glock.mock.factory.MockID
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
 /**
@@ -70,7 +69,7 @@ class GLoCK {
         return instance as MockType
     }
 
-    public <MockType> MockType chargePredefined(Class<MockType> clazz, MockID mockId = MockID.DEFAULT){
+    public <MockType> MockType chargePredefined(Class<MockType> clazz, String mockId = "DEFAULT"){
         if (!mockFactory) throw new IllegalStateException("No mock factory configured")
         def instance = mockFactory.getInstance(mockInstanceHelper,mockId,clazz)
         return chargeImpl(clazz,instance)

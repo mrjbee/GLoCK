@@ -1,6 +1,5 @@
 package org.monroe.team.glock.ext.autowire
 
-import org.monroe.team.glock.mock.factory.MockID
 import java.lang.annotation.Target
 import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
@@ -15,5 +14,5 @@ import java.lang.annotation.RetentionPolicy
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @interface Mock {
-    public String id();
+    public String value();
 }

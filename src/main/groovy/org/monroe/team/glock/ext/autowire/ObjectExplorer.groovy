@@ -2,7 +2,6 @@ package org.monroe.team.glock.ext.autowire
 
 import org.monroe.team.glock.mock.factory.MockFactory
 import java.lang.reflect.Field
-import org.monroe.team.glock.mock.factory.MockID
 
 /**
  * User: MisterJBee 
@@ -43,9 +42,9 @@ class ObjectExplorer {
        return answer;
     }
 
-    MockID getMockIDFor(Field field) {
+    String getMockIDFor(Field field) {
         Mock mock = field.getAnnotation(Mock);
-        return mock.id;
+        return mock.value();
     }
 
     void setFieldValue(Field field, Object value) {

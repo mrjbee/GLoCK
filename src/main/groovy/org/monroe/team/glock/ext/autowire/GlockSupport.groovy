@@ -5,7 +5,6 @@ import org.monroe.team.glock.GLoCK
 import org.junit.Before
 import org.monroe.team.glock.mock.factory.MockFactory
 import java.lang.reflect.Field
-import org.monroe.team.glock.mock.factory.MockID
 import org.monroe.team.glock.mock.factory.DefaultMockFactory
 import org.junit.After
 
@@ -45,7 +44,7 @@ class GlockSupport {
 
     private void initMockField(Field field) {
         Class mockClass = field.getClass();
-        MockID mockID = objectExplorer.getMockIDFor(field);                        T
+        String mockID = objectExplorer.getMockIDFor(field);                        T
         Object mockValue = glockInstance.chargePredefined(mockClass, mockID);
         objectExplorer.setFieldValue(field, mockValue);
     }

@@ -8,5 +8,5 @@ import org.monroe.team.glock.mock.MockInstanceHelper
  * Time: 8:44 PM
  */
 interface MockFactory {
-   public <MockType> MockType getInstance(MockInstanceHelper instanceHelper, MockID mockID, Class<MockType> mockClass)
+   public <MockType> MockType getInstance(MockInstanceHelper instanceHelper, String mockID, Class<MockType> mockClass)
 }

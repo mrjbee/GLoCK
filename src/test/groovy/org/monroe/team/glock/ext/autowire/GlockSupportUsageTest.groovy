@@ -2,7 +2,6 @@ package org.monroe.team.glock.ext.autowire
 
 import org.monroe.team.glock.test.domain.IClass
 import org.junit.Test
-import org.monroe.team.glock.mock.factory.MockID
 
 /**
  * User: MisterJBee 
@@ -12,7 +11,7 @@ import org.monroe.team.glock.mock.factory.MockID
  */
 class GlockSupportUsageTest extends GlockSupport {
 
-  @Mock(id="sad")
+  @Mock
   IClass mock;
 
   @Test
