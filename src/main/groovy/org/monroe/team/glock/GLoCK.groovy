@@ -36,11 +36,11 @@ class GLoCK {
 
     private final MockFactory mockFactory
 
-    GLoCK(MockFactory mockFactory) {
+    public GLoCK(MockFactory mockFactory) {
         this.mockFactory = mockFactory
     }
 
-    GLoCK() {
+    public GLoCK() {
         this.mockFactory = null
     }
 
