@@ -1,9 +1,9 @@
 package org.monroe.team.glock.ext.autowire
 
-import java.lang.annotation.Target
 import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
+import java.lang.annotation.Target
 
 /**
  * User: MisterJBee 
@@ -11,7 +11,8 @@ import java.lang.annotation.RetentionPolicy
  * Open source: MIT Licence 
  * (Do whatever you want with the source code)
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@interface UnderTesting {
+@interface CreateMethod {
+    String value() default "[nAn]";
 }
