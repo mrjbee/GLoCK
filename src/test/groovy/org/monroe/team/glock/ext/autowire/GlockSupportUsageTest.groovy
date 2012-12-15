@@ -5,7 +5,6 @@ import org.junit.Test
 import org.monroe.team.glock.test.domain.IClass2
 import org.monroe.team.glock.test.domain.Service
 import junit.framework.Assert
-import groovy.transform.ASTTest
 
 /**
  * User: MisterJBee 
@@ -40,7 +39,7 @@ class GlockSupportUsageTest extends GlockSupport {
     @Test
     public void shouldPassWithMinimalConfiguration() {
         boolean wasExecuted = false;
-        mockWith({mock.methodA()}, {wasExecuted = true});
+        mock({mock.methodA()}, {wasExecuted = true});
         reload()
         mock.methodA();
         Assert.assertTrue(wasExecuted)
@@ -67,9 +66,9 @@ class GlockSupportUsageTest extends GlockSupport {
 
     @Test
     public void shouldWorkWithUnderTestingObject() {
-        mockWith({mock.methodB(0)}, {"hello"})
-        mockWith({testMock.methodB(1)}, {" world"})
-        mockWith({mock2.promo()}, {"Hey, "})
+        mock({mock.methodB(0)}, {"hello"})
+        mock({testMock.methodB(1)}, {" world"})
+        mock({mock2.promo()}, {"Hey, "})
         reload();
         Assert.assertEquals("Hey, hello world", service.doSomething())
     }

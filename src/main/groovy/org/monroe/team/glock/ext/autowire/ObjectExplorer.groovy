@@ -107,6 +107,13 @@ class ObjectExplorer {
         Use use = field.getAnnotation(Use);
         return use.value()=="[auto]" ? null : use.value();
     }
+    Object getFieldValueByFieldName(String s) {
+        Field field = objectUnderDiscover.getClass().getDeclaredField(fieldName)
+        if (field == null){
+            throw new IllegalStateException("Unknown field "+fieldName);
+        }
+        return getFieldValue(field)
+    }
 
     Object getFieldValue(Field field) {
         boolean wasAccessibly = field.isAccessible()
@@ -128,4 +135,6 @@ class ObjectExplorer {
     boolean isFieldInitialized(Field field) {
         return getFieldValue(field) != null;
     }
+
+
 }

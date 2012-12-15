@@ -162,17 +162,40 @@ class GlockSupport {
         }
     }
 
-    public void mockWith(Closure whatToMock, Closure mockWithWhat){
+    public void mock(Object whatToMock, Closure mockWithWhat){
        glockInstance.mockWith(whatToMock, mockWithWhat);
     }
 
-    public void stubWith(Closure whatToMock, Closure mockWithWhat){
+    public void stub(Object whatToMock, Closure mockWithWhat){
         glockInstance.stubWith(whatToMock, mockWithWhat);
+    }
+
+    public Closure nothing(){
+        return glockInstance.doNothing();
+    }
+
+    public Closure answer(Object returnValue){
+        return glockInstance.answerWith(returnValue)
+    }
+
+    public Object anyArg(){
+        return glockInstance.anyArgs()
+    }
+
+    public Object anyArgsButArgs(){
+        return glockInstance.anyArgsButArgs()
     }
 
     public void reload(){
         glockInstance.reload()
     }
 
+    public void set(Object container, String fieldName, Object value){
+        new ObjectExplorer(container).setFieldValueByFieldName(fieldName, value)
+    }
+
+    public Object get(Object container, String fieldName){
+        return new ObjectExplorer(container).getFieldValueByFieldName(fieldName)
+    }
 
 }
