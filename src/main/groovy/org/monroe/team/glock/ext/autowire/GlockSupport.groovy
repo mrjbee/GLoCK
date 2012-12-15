@@ -10,6 +10,7 @@ import org.junit.After
 import org.junit.Rule
 import org.junit.rules.TestName
 import java.lang.reflect.Method
+import com.sun.xml.internal.ws.model.FieldSignature
 
 /**
  * User: MisterJBee 
@@ -67,7 +68,7 @@ class GlockSupport {
               toBeDiscoveredByTypeFieldList.add(field);
            }
         }
-        updateValuePerFieldMapWithDecisionsByType(valuePerFieldNameMap, toBeDiscoveredByTypeFieldList)
+        updateValuePerFieldMapWithDecisionsByType(testInstance,valuePerFieldNameMap, toBeDiscoveredByTypeFieldList)
         updateTestInstanceWithValues(testInstance, valuePerFieldNameMap)
     }
 
@@ -78,7 +79,21 @@ class GlockSupport {
         }
     }
 
-    void updateValuePerFieldMapWithDecisionsByType(Map<String, Object> stringObjectLinkedHashMap, List<Field> fields) {
+    void updateValuePerFieldMapWithDecisionsByType(Object testInstance, Map<String, Object> stringObjectLinkedHashMap, List<Field> fields) {
+        ObjectExplorer testInstanceExpl = new ObjectExplorer(testInstance)
+        ObjectExplorer objectExplorerBuf = objectExplorer;
+        fields.each {Field field->
+            List<Field> testInstanceProbeFields = testInstanceExpl.findFieldsByType(field.getType())
+            Field fieldToUse = testInstanceProbeFields?.find{
+                return (!testInstanceExpl.isFieldInitialized(it) && !stringObjectLinkedHashMap.containsKey(it.getName()))
+            }
+            if (fieldToUse){
+               Object value = objectExplorerBuf.getFieldValue(field);
+               stringObjectLinkedHashMap.put(fieldToUse.getName(), value);
+            } else {
+              throw new IllegalStateException("Could not inject "+field.getName() +" field.")
+            }
+        }
     }
 
     private Object initTestInstance() {

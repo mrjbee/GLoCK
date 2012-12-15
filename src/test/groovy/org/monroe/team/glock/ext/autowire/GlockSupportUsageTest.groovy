@@ -16,6 +16,7 @@ import groovy.transform.ASTTest
 class GlockSupportUsageTest extends GlockSupport {
 
     @Mock @Use("iClassInstance") IClass mock;
+    @Mock @Use IClass testMock;
     @Mock @Use IClass2 mock2;
 
     @UnderTesting Service service;
@@ -67,7 +68,7 @@ class GlockSupportUsageTest extends GlockSupport {
     @Test
     public void shouldWorkWithUnderTestingObject() {
         mockWith({mock.methodB(0)}, {"hello"})
-        mockWith({mock.methodB(1)}, {" world"})
+        mockWith({testMock.methodB(1)}, {" world"})
         mockWith({mock2.promo()}, {"Hey, "})
         reload();
         Assert.assertEquals("Hey, hello world", service.doSomething())

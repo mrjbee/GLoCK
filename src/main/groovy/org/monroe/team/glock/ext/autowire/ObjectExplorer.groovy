@@ -117,4 +117,15 @@ class ObjectExplorer {
     }
 
 
+    List<Field> findFieldsByType(Class<?> type) {
+        return objectUnderDiscover.getClass().getDeclaredFields().findAll {
+            Class probeType = it.getType()
+            //TODO: check hwo should be assignable
+            return type.isAssignableFrom(probeType)
+        }
+    }
+
+    boolean isFieldInitialized(Field field) {
+        return getFieldValue(field) != null;
+    }
 }
