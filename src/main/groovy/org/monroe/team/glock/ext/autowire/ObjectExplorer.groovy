@@ -24,7 +24,7 @@ class ObjectExplorer {
     }
 
     Class<? extends MockFactory> getFactoryClass() {
-        GlockTest testDescriptor = objectUnderDiscover.getClass().getAnnotation(GlockTest);
+        MockFactoryClass testDescriptor = objectUnderDiscover.getClass().getAnnotation(MockFactoryClass);
         if (testDescriptor == null){
             return null;
         }
