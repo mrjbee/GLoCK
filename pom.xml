@@ -3,7 +3,7 @@
 
     <groupId>org.monroe.team.glock</groupId>
     <artifactId>glock-main</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
