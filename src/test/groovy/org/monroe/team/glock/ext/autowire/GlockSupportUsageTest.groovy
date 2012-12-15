@@ -5,6 +5,7 @@ import org.junit.Test
 import org.monroe.team.glock.test.domain.IClass2
 import org.monroe.team.glock.test.domain.Service
 import junit.framework.Assert
+import groovy.transform.ASTTest
 
 /**
  * User: MisterJBee 
@@ -14,10 +15,11 @@ import junit.framework.Assert
  */
 class GlockSupportUsageTest extends GlockSupport {
 
-    @Mock IClass mock;
-    @Mock IClass2 mock2;
+    @Mock @Use("iClassInstance") IClass mock;
+    @Mock @Use IClass2 mock2;
 
     @UnderTesting Service service;
+
     boolean defaultCreateMethodUsed = false;
 
     //==========Pre-defined methods ===============

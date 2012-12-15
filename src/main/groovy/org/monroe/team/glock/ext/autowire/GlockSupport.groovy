@@ -26,14 +26,24 @@ class GlockSupport {
 
     @Before
     public void doNotTouchThisBeforeMethod(){
-        beforeTestInit();
+        beforeTestInit()
         instantiateGlockIfRequired()
-        initMockFields()
-        initUnderTestInstance()
-        afterTestInit();
+        initTestInstanceDependencies()
+        customizeTestInstanceDependencies()
+        Object testInstance = initTestInstance();
+        if (testInstance != null){
+           initUnderTestingFields(testInstance)
+           customizeTestInstance()
+        }
+        afterTestInit()
     }
 
+
+
+
     protected void afterTestInit() {}
+    protected void customizeTestInstanceDependencies() {}
+    protected void customizeTestInstance() {}
     protected void beforeTestInit() {}
 
     @After
@@ -42,11 +52,40 @@ class GlockSupport {
         afterTest();
     }
 
-    private void initUnderTestInstance() {
+    private void initUnderTestingFields(Object testInstance) {
+        List<Field> useFields = objectExplorer.useFields();
+        Map<String, Object> valuePerFieldNameMap = [:];
+        List<Field> toBeDiscoveredByTypeFieldList = [];
+        ObjectExplorer objectExplorerBuf = objectExplorer;
+        useFields.each {Field field ->
+
+           String fieldName = objectExplorerBuf.getUseAsFieldName(field);
+           if (fieldName != null){
+              Object value = objectExplorerBuf.getFieldValue(field)
+              valuePerFieldNameMap.put(fieldName, value);
+           } else {
+              toBeDiscoveredByTypeFieldList.add(field);
+           }
+        }
+        updateValuePerFieldMapWithDecisionsByType(valuePerFieldNameMap, toBeDiscoveredByTypeFieldList)
+        updateTestInstanceWithValues(testInstance, valuePerFieldNameMap)
+    }
+
+    void updateTestInstanceWithValues(Object testInstance, Map<String, Object> stringObjectAbstractMap) {
+        ObjectExplorer testInstanceExplorer = new ObjectExplorer(testInstance);
+        stringObjectAbstractMap.each {String key, Object value ->
+            testInstanceExplorer.setFieldValueByFieldName(key, value)
+        }
+    }
+
+    void updateValuePerFieldMapWithDecisionsByType(Map<String, Object> stringObjectLinkedHashMap, List<Field> fields) {
+    }
+
+    private Object initTestInstance() {
 
         if (!objectExplorer.isUnderTestingSpecified()){
             //Since there no under testing specified nothing to do
-            return
+            return null;
         }
 
         Field underTestingField = extractFieldUnderTesting()
@@ -60,6 +99,7 @@ class GlockSupport {
             newInstance = createUnderTestingInstance(underTestingField.getType())
         }
         objectExplorer.setFieldValue(underTestingField, newInstance)
+        return newInstance;
     }
 
     private Field extractFieldUnderTesting() {
@@ -75,7 +115,7 @@ class GlockSupport {
     }
 
 
-    private void initMockFields() {
+    private void initTestInstanceDependencies() {
         glockInstance.newClip();
         List<List> mockFields = objectExplorer.mockFields();
         for (Field mockField : mockFields) {

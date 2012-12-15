@@ -32,14 +32,14 @@ class ObjectExplorer {
     }
 
     List<Field> mockFields() {
-       return fiendFieldsAnnotatedWith(Mock)
+       return findFieldsAnnotatedWith(Mock)
     }
 
     List<Field> underTestingFields() {
-        return fiendFieldsAnnotatedWith(UnderTesting)
+        return findFieldsAnnotatedWith(UnderTesting)
     }
 
-    private ArrayList<Field> fiendFieldsAnnotatedWith(Class<?> annClass) {
+    private ArrayList<Field> findFieldsAnnotatedWith(Class<?> annClass) {
         Field[] fields = objectUnderDiscover.getClass().getDeclaredFields();
         List<Field> answer = [];
         for (Field field : fields) {
@@ -52,11 +52,18 @@ class ObjectExplorer {
 
     String getMockIDFor(Field field) {
         Mock mock = field.getAnnotation(Mock);
-        return mock.mockId();
+        return mock.value();
+    }
+
+    void setFieldValueByFieldName(String fieldName, Object value) {
+       Field field = objectUnderDiscover.getClass().getDeclaredField(fieldName)
+       if (field == null){
+           throw new IllegalStateException("Unknown field "+fieldName);
+       }
+       setFieldValue(field, value)
     }
 
     void setFieldValue(Field field, Object value) {
-        // set accessible true
         boolean wasAccessibly = field.isAccessible()
         field.setAccessible(true)
         field.set(objectUnderDiscover, value)
@@ -83,7 +90,7 @@ class ObjectExplorer {
     }
 
     boolean isUnderTestingSpecified() {
-        return !fiendFieldsAnnotatedWith(UnderTesting).isEmpty()
+        return !findFieldsAnnotatedWith(UnderTesting).isEmpty()
     }
 
 
@@ -91,4 +98,23 @@ class ObjectExplorer {
     Object exec(Method method) {
         return method.invoke(objectUnderDiscover)
     }
+
+    List<Field> useFields() {
+        return findFieldsAnnotatedWith(Use)
+    }
+
+    String getUseAsFieldName(Field field) {
+        Use use = field.getAnnotation(Use);
+        return use.value()=="[auto]" ? null : use.value();
+    }
+
+    Object getFieldValue(Field field) {
+        boolean wasAccessibly = field.isAccessible()
+        field.setAccessible(true)
+        Object value = field.get(objectUnderDiscover)
+        field.setAccessible(wasAccessibly)
+        return value;
+    }
+
+
 }
