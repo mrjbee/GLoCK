@@ -1,10 +1,31 @@
-Project: GLoCK
-Team: monroe
-====
 
-Groovy Mock Framework
+=======================
+Project: Groovy Mock Framework
+Licence: MIT
+=======================
 
 INSTALLATION
-* git clone https://github.com/mrjbee/GLoCK.git
-* cd GLoCK
-* mvn clean installtest
+=======================
+* /> git clone https://github.com/mrjbee/GLoCK.git
+* /> cd GLoCK
+* /> git checkout <release.id>
+* /> mvn clean install
+
+MAVEN DEPENDENCY
+=======================
+<dependency>
+  <groupId>org.monroe.team.glock</groupId>
+  <artifactId>glock-main</artifactId>
+  <version>0.1</version>
+  <scope>test</scope>
+</dependency>
+
+RELEASE DETAILS
+===============
+v0.1:
+* Basic mock/stub functionality implemented
+* Basic test class "GlockSupport" implemented
+* Auto-wire mock/stub injection annotations implemented
+ 
+
+
