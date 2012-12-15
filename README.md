@@ -8,16 +8,16 @@
 ## INSTALLATION
 * /> git clone https://github.com/mrjbee/GLoCK.git
 * /> cd GLoCK
-* /> git checkout `<release.id>`
+* /> git checkout `<release.id.tag, aka v0.1>`
 * /> mvn clean install
 
 ## MAVEN DEPENDENCY
-<dependency>
+`<dependency>
   <groupId>org.monroe.team.glock</groupId>
   <artifactId>glock-main</artifactId>
-  <version>0.1</version>
+  <version><release.id, aka 0.1/></version>
   <scope>test</scope>
-</dependency>
+</dependency>`
 
 ## RELEASE DETAILS
 ### v0.1:
