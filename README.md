@@ -1,7 +1,10 @@
 
+Project
+Groovy Mock Framework
 =======================
-Project: Groovy Mock Framework
-Licence: MIT
+
+Licence
+MIT
 =======================
 
 INSTALLATION
@@ -23,6 +26,7 @@ MAVEN DEPENDENCY
 RELEASE DETAILS
 ===============
 v0.1:
+===============
 * Basic mock/stub functionality implemented
 * Basic test class "GlockSupport" implemented
 * Auto-wire mock/stub injection annotations implemented
