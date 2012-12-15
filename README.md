@@ -1,7 +1,7 @@
 
 ## Project
 # Groovy Mock Framework
-
+TODO: add description
 ## Licence
 ### MIT
 
@@ -15,7 +15,7 @@
 	<dependency>
 	  <groupId>org.monroe.team.glock</groupId>
 	  <artifactId>glock-main</artifactId>
-	  <version><release.id, aka 0.1/></version>
+	  <version>`<release.id, aka 0.1>`</version>
 	  <scope>test</scope>
 	</dependency>
 
