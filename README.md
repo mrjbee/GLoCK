@@ -12,12 +12,12 @@
 * /> mvn clean install
 
 ## MAVEN DEPENDENCY
-`<dependency>
-  <groupId>org.monroe.team.glock</groupId>
-  <artifactId>glock-main</artifactId>
-  <version><release.id, aka 0.1/></version>
-  <scope>test</scope>
-</dependency>`
+	<dependency>
+	  <groupId>org.monroe.team.glock</groupId>
+	  <artifactId>glock-main</artifactId>
+	  <version><release.id, aka 0.1/></version>
+	  <scope>test</scope>
+	</dependency>
 
 ## RELEASE DETAILS
 ### v0.1:
