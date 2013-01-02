@@ -46,7 +46,7 @@ class Control {
 
     ExpectedMethod findSuitableMethods(Object[] args, List<ExpectedMethod> expectedMethodList) {
       expectedMethodList.find {ExpectedMethod method ->
-          (!method.executedOnce && method.matchArguments(args))
+          (method.canBeUsed() && method.matchArguments(args))
       }
     }
 

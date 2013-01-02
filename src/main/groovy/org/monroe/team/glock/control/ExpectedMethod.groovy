@@ -80,4 +80,8 @@ class ExpectedMethod {
             throw new RuntimeException(e);
         }
     }
+
+    boolean canBeUsed() {
+        return !executedOnce || stub
+    }
 }
