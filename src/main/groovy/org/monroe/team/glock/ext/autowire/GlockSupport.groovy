@@ -22,7 +22,8 @@ class GlockSupport {
 
     @Rule public TestName name = new TestName();
 
-    private GLoCK glockInstance = null;
+    //TODO: bypass charge() for manual mock creation
+    GLoCK glockInstance = null;
     private ObjectExplorer objectExplorer = new ObjectExplorer(this);
 
     @Before
