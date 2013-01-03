@@ -25,6 +25,6 @@ class EqualsArgMatcher implements ArgMatcher{
 
     @Override
     String toString() {
-        "eq ${(expectedValue)?StringExtractor.object(expectedValue):'NullValue'}"
+        "eq ${(expectedValue != null)?StringExtractor.object(expectedValue):'NullValue'}"
     }
 }
