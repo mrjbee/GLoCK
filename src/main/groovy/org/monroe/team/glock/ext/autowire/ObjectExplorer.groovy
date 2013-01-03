@@ -56,11 +56,29 @@ class ObjectExplorer {
     }
 
     void setFieldValueByFieldName(String fieldName, Object value) {
-       Field field = objectUnderDiscover.getClass().getDeclaredField(fieldName)
+       Field field = lookForAField(objectUnderDiscover.getClass(), fieldName)
        if (field == null){
            throw new IllegalStateException("Unknown field "+fieldName);
        }
        setFieldValue(field, value)
+    }
+
+    private Field lookForAField(Class clazz,String fieldName) {
+        Class classToExplore =  clazz
+        Field answer = null
+        Exception excepToThrow = null;
+        while (classToExplore != Object && answer == null){
+            try{
+                answer = classToExplore.getDeclaredField(fieldName)
+            } catch (NoSuchFieldException e) {
+                excepToThrow = e
+            }
+            classToExplore = classToExplore.getSuperclass()
+        }
+        if (answer == null){
+            throw excepToThrow
+        }
+        return answer
     }
 
     void setFieldValue(Field field, Object value) {
@@ -125,11 +143,20 @@ class ObjectExplorer {
 
 
     List<Field> findFieldsByType(Class<?> type) {
-        return objectUnderDiscover.getClass().getDeclaredFields().findAll {
-            Class probeType = it.getType()
-            //TODO: check hwo should be assignable
-            return type.isAssignableFrom(probeType)
+
+        Class classToExplore =  objectUnderDiscover.getClass()
+        List<Field> answer = []
+        while (classToExplore != Object){
+          classToExplore.getDeclaredFields().findAll {
+              Class probeType = it.getType()
+              //TODO: check hwo should be assignable
+              return type.isAssignableFrom(probeType)
+          }.each {
+              answer.add(it)
+          }
+          classToExplore = classToExplore.getSuperclass()
         }
+        return answer;
     }
 
     boolean isFieldInitialized(Field field) {
