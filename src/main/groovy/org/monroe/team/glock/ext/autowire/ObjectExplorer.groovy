@@ -28,7 +28,7 @@ class ObjectExplorer {
         if (testDescriptor == null){
             return null;
         }
-        return testDescriptor.factory;
+        return testDescriptor.value();
     }
 
     List<Field> mockFields() {
