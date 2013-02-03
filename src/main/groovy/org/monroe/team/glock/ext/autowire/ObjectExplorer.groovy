@@ -125,7 +125,7 @@ class ObjectExplorer {
         Use use = field.getAnnotation(Use);
         return use.value()=="[auto]" ? null : use.value();
     }
-    Object getFieldValueByFieldName(String s) {
+    Object getFieldValueByFieldName(String fieldName) {
         Field field = objectUnderDiscover.getClass().getDeclaredField(fieldName)
         if (field == null){
             throw new IllegalStateException("Unknown field "+fieldName);
